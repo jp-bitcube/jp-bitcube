@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import { IProduct } from './product';
+import { ProducService } from './product.service';
 @Component({
   selector: 'pm-products',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrls: ['./product-list.component.css'],
+  providers: [ ProducService ]
 })
 
 export class ProductListComponent implements OnInit {
+
   pageTitle: string = 'Product List';
   imageWidth: number = 50;
   imageMargin: number = 2;
@@ -73,17 +76,16 @@ export class ProductListComponent implements OnInit {
     }
   ];
 
-  constructor () {
+  constructor(private productService: ProducService ) {
+  }
+
+  ngOnInit(): void {
+    this.products = this.productService.getProducts();
     this.filteredProducts = this.products;
-    this.listFilter = 'cart';
   }
 
   toggleImage(): void {
     this.showImage = !this.showImage;
-  }
-
-  ngOnInit(): void {
-    console.log('In OnInit');
   }
 
   performFilter(filterBy: string) {
